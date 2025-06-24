@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StartupBridge - Connecting Investors & Entrepreneurs in India</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        // Firebase configuration from environment
+        window.FIREBASE_CONFIG = {
+            apiKey: "FIREBASE_API_KEY_PLACEHOLDER",
+            authDomain: "FIREBASE_PROJECT_ID_PLACEHOLDER.firebaseapp.com",
+            projectId: "FIREBASE_PROJECT_ID_PLACEHOLDER", 
+            storageBucket: "FIREBASE_PROJECT_ID_PLACEHOLDER.firebasestorage.app",
+            appId: "FIREBASE_APP_ID_PLACEHOLDER"
+        };
+    </script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-handshake"></i>
+                <span>StartupBridge</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <div class="nav-item" id="auth-section">
+                    <button class="btn-primary" id="login-btn">Login</button>
+                    <button class="btn-secondary" id="register-btn">Register</button>
+                </div>
+                <div class="nav-item" id="user-section" style="display: none;">
+                    <span id="user-name"></span>
+                    <button class="btn-secondary" id="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Landing Page -->
+        <section id="landing-page" class="landing-section">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Bridge the Gap Between Investors & Entrepreneurs</h1>
+                    <p>India's premier startup matchmaking platform connecting visionary entrepreneurs with strategic investors, bankers, and business advisors.</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span>Connect with Investors</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Share Your Ideas</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-handshake"></i>
+                            <span>Build Partnerships</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>Choose Your Role</h2>
+                <div class="role-cards">
+                    <div class="role-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Investor</h3>
+                        <p>Discover promising startups and business opportunities across India</p>
+                        <ul>
+                            <li>Browse verified business proposals</li>
+                            <li>Connect with entrepreneurs</li>
+                            <li>Track investment opportunities</li>
+                        </ul>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Entrepreneur</h3>
+                        <p>Pitch your innovative ideas to potential investors and partners</p>
+                        <ul>
+                            <li>Submit business proposals</li>
+                            <li>Showcase your startup</li>
+                            <li>Connect with funding sources</li>
+                        </ul>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-university"></i>
+                        <h3>Banker</h3>
+                        <p>Offer loan products and financial solutions to growing businesses</p>
+                        <ul>
+                            <li>Post loan offerings</li>
+                            <li>Connect with borrowers</li>
+                            <li>Expand your portfolio</li>
+                        </ul>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-user-tie"></i>
+                        <h3>Business Advisor</h3>
+                        <p>Share expertise and provide guidance to emerging businesses</p>
+                        <ul>
+                            <li>Offer consulting services</li>
+                            <li>Answer business queries</li>
+                            <li>Build your network</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Modal -->
+        <div id="register-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-register">&times;</span>
+                <h2>Register</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-email">Email:</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password:</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-name">Full Name:</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-role">Role:</label>
+                        <select id="register-role" required>
+                            <option value="">Select your role</option>
+                            <option value="investor">Investor</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                            <option value="banker">Banker</option>
+                            <option value="advisor">Business Advisor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-company">Company/Organization:</label>
+                        <input type="text" id="register-company">
+                    </div>
+                    <button type="submit" class="btn-primary">Register</button>
+                </form>
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                <button id="google-register" class="btn-google">
+                    <i class="fab fa-google"></i>
+                    Register with Google
+                </button>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-login">&times;</span>
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                <button id="google-login" class="btn-google">
+                    <i class="fab fa-google"></i>
+                    Login with Google
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="dashboard-section" style="display: none;">
+            <div class="dashboard-header">
+                <h1 id="dashboard-title">Dashboard</h1>
+                <div class="dashboard-nav">
+                    <button class="nav-btn active" data-section="overview">Overview</button>
+                    <button class="nav-btn" data-section="browse">Browse</button>
+                    <button class="nav-btn" data-section="post">Post</button>
+                    <button class="nav-btn" data-section="messages">Messages</button>
+                    <button class="nav-btn" data-section="profile">Profile</button>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <div id="overview-section" class="dashboard-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-eye"></i>
+                        <div>
+                            <h3 id="views-count">0</h3>
+                            <p>Profile Views</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h3 id="connections-count">0</h3>
+                            <p>Connections</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <h3 id="rating">0.0</h3>
+                            <p>Rating</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="activity-list" class="activity-list">
+                        <p class="empty-state">No recent activity</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browse Section -->
+            <div id="browse-section" class="dashboard-content" style="display: none;">
+                <div class="browse-header">
+                    <h3>Browse Opportunities</h3>
+                    <div class="filters">
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="fintech">FinTech</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="education">Education</option>
+                            <option value="agriculture">Agriculture</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="renewable-energy">Renewable Energy</option>
+                        </select>
+                        <input type="text" id="search-input" placeholder="Search...">
+                        <button id="search-btn" class="btn-primary">Search</button>
+                    </div>
+                </div>
+                <div id="browse-results" class="browse-grid">
+                    <p class="empty-state">No items to display</p>
+                </div>
+            </div>
+
+            <!-- Post Section -->
+            <div id="post-section" class="dashboard-content" style="display: none;">
+                <div class="post-form-container">
+                    <h3 id="post-title">Create New Post</h3>
+                    <form id="post-form">
+                        <div class="form-group">
+                            <label for="post-type">Post Type:</label>
+                            <select id="post-type" required>
+                                <option value="">Select type</option>
+                                <option value="business-idea">Business Idea</option>
+                                <option value="investment-proposal">Investment Proposal</option>
+                                <option value="loan-offer">Loan Offer</option>
+                                <option value="advisory-service">Advisory Service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-title-input">Title:</label>
+                            <input type="text" id="post-title-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-category">Category:</label>
+                            <select id="post-category" required>
+                                <option value="">Select category</option>
+                                <option value="technology">Technology</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="fintech">FinTech</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="education">Education</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="renewable-energy">Renewable Energy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-description">Description:</label>
+                            <textarea id="post-description" rows="6" required></textarea>
+                        </div>
+                        <div class="form-group" id="funding-amount-group" style="display: none;">
+                            <label for="funding-amount">Funding Amount (₹):</label>
+                            <input type="number" id="funding-amount" min="0">
+                        </div>
+                        <div class="form-group" id="loan-details-group" style="display: none;">
+                            <label for="interest-rate">Interest Rate (%):</label>
+                            <input type="number" id="interest-rate" min="0" max="100" step="0.1">
+                            <label for="loan-amount">Loan Amount (₹):</label>
+                            <input type="number" id="loan-amount" min="0">
+                        </div>
+                        <button type="submit" class="btn-primary">Post</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="messages-section" class="dashboard-content" style="display: none;">
+                <h3>Messages</h3>
+                <div class="messages-container">
+                    <div class="conversations-list">
+                        <h4>Conversations</h4>
+                        <div id="conversations" class="conversations">
+                            <p class="empty-state">No conversations yet</p>
+                        </div>
+                    </div>
+                    <div class="message-thread">
+                        <div id="message-header" class="message-header" style="display: none;">
+                            <h4 id="conversation-title">Select a conversation</h4>
+                        </div>
+                        <div id="messages-list" class="messages-list">
+                            <p class="empty-state">Select a conversation to view messages</p>
+                        </div>
+                        <div id="message-form" class="message-form" style="display: none;">
+                            <input type="text" id="message-input" placeholder="Type your message...">
+                            <button id="send-message" class="btn-primary">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="dashboard-content" style="display: none;">
+                <h3>Profile</h3>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Full Name:</label>
+                        <input type="text" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email:</label>
+                        <input type="email" id="profile-email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-role">Role:</label>
+                        <select id="profile-role" disabled>
+                            <option value="investor">Investor</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                            <option value="banker">Banker</option>
+                            <option value="advisor">Business Advisor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-company">Company/Organization:</label>
+                        <input type="text" id="profile-company">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-bio">Bio:</label>
+                        <textarea id="profile-bio" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-location">Location:</label>
+                        <input type="text" id="profile-location">
+                    </div>
+                    <button type="submit" class="btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message" style="display: none;">
+        <div class="error-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="error-text"></span>
+            <button id="close-error">&times;</button>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="success-message" style="display: none;">
+        <div class="success-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="success-text"></span>
+            <button id="close-success">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="app.js"></script>
+    <script type="module" src="dashboard_enhanced.js"></script>
+</body>
+</html>
